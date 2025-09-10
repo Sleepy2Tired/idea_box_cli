@@ -1,77 +1,64 @@
 # Idea Box CLI
-Capture and organize your ideas instantly from the command line.
+Capture and organize your ideas effortlessly from the command line.
 
 ## Features
-- **Instant Idea Capture**: Quickly add ideas without distraction.
-- **Categorization**: Organize ideas into customizable categories.
-- **Search Functionality**: Easily find ideas by keywords or categories.
-- **Export Options**: Save your ideas in various formats for easy sharing.
-- **Cross-Platform Compatibility**: Works on Windows, macOS, and Linux.
+- Capture ideas with customizable tags.
+- List and search ideas by tags.
+- Export your ideas to JSON format for easy sharing.
 
 ## Quickstart
+To get started with Idea Box CLI, follow these simple steps:
 
-### Installation
-To install Idea Box CLI, run the following command:
+1. **Install the CLI**:
+   ```bash
+   npm install -g idea-box-cli
+   ```
 
-```bash
-npm install -g idea-box-cli
-```
-
-### Running the Tool
-Once installed, you can start the CLI by executing:
-
-```bash
-idea-box
-```
+2. **Run the CLI**:
+   ```bash
+   idea-box
+   ```
 
 ## Usage Examples
+- **Add a new idea**:
+   ```bash
+   idea-box add "Build a website" --tags web,portfolio
+   ```
 
-- **Add a New Idea**:
-  ```bash
-  idea add "Build a personal website" --category "Web Development"
-  ```
+- **List all ideas**:
+   ```bash
+   idea-box list
+   ```
 
-- **List All Ideas**:
-  ```bash
-  idea list
-  ```
+- **Search ideas by tag**:
+   ```bash
+   idea-box search --tag web
+   ```
 
-- **Search Ideas by Keyword**:
-  ```bash
-  idea search "website"
-  ```
-
-- **Export Ideas**:
-  ```bash
-  idea export --format json
-  ```
+- **Export ideas to JSON**:
+   ```bash
+   idea-box export --output ideas.json
+   ```
 
 ## Configuration
-Customize your Idea Box CLI settings by creating a configuration file at `~/.idea-box/config.json`. Here’s an example configuration:
-
-```json
-{
-  "defaultCategory": "General",
-  "exportFormat": "txt"
-}
-```
+Configuration settings can be adjusted in the `~/.idea-box/config.json` file. Key options include:
+- `defaultTags`: Set default tags for new ideas.
+- `exportPath`: Specify the default path for exported JSON files.
 
 ## Roadmap
-- [ ] Implement tagging system for ideas.
-- [ ] Add reminder functionality for follow-up on ideas.
-- [ ] Introduce collaborative features for team usage.
-- [ ] Enhance export options with more formats.
+- [ ] Implement idea prioritization feature.
+- [ ] Add user authentication for syncing ideas across devices.
+- [ ] Enhance search capabilities with advanced filtering.
 
 ## FAQ
-
 **Q: Can I use Idea Box CLI without Node.js?**  
-A: No, Node.js is required to run Idea Box CLI.
+A: No, Node.js is required to run the CLI.
 
-**Q: How can I contribute to the project?**  
-A: Feel free to fork the repository and submit a pull request with your improvements.
-
-**Q: Is there a mobile version available?**  
-A: Currently, Idea Box CLI is only available as a command-line tool.
+**Q: How do I uninstall the CLI?**  
+A: You can uninstall it using:
+```bash
+npm uninstall -g idea-box-cli
+```
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
