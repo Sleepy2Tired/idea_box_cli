@@ -1,0 +1,14 @@
+{
+  "last_id": 2,
+  "items": [
+    {
+      "id": 1,
+      "text": "Auto-README generator SaaS --tags ai,docs,cli",
+      "tags": [
+        "landing",
+        "pricing"
+      ],
+      "created_at": "2025-09-10 10:01:47"
+    }
+  ]
+}
