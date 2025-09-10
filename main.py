@@ -185,7 +185,7 @@ def build_parser():
     sub = p.add_subparsers(dest="cmd", required=True)
 
     add = sub.add_parser("add", help='Add an idea. Example: add "Ship MVP" --tags ai,tools')
-    add.add_argument("text", nargs=argparse.REMAINDER)
+    add.add_argument("text", nargs="+")  # stops at flags, e.g. --tags
     add.add_argument("--tags", "-t", type=str, default="")
     add.set_defaults(func=cmd_add)
 
@@ -193,7 +193,7 @@ def build_parser():
     ls.set_defaults(func=cmd_list)
 
     sr = sub.add_parser("search", help="Search in text and tags")
-    sr.add_argument("query", nargs=argparse.REMAINDER)
+    sr.add_argument("query", nargs="+")
     sr.set_defaults(func=cmd_search)
 
     tg = sub.add_parser("tag", help="List ideas by tag")
