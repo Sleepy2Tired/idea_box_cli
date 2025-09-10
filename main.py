@@ -4,7 +4,7 @@ import json
 from dataclasses import dataclass, asdict
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 import sys
 
 ROOT = Path(__file__).parent
@@ -15,7 +15,7 @@ class Idea:
     id: int
     text: str
     tags: List[str]
-    created_at: str  # ISO timestamp
+    created_at: str  # "YYYY-MM-DD HH:MM:SS"
 
 def now_iso() -> str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -32,35 +32,44 @@ def save_db(db: Dict[str, Any]) -> None:
     DB_PATH.write_text(json.dumps(db, indent=2, ensure_ascii=False), encoding="utf-8")
 
 def normalize_tags(tag_list: List[str]) -> List[str]:
-    # split by comma or spaces, strip, lowercase, dedupe
+    # Accept comma-separated or space-separated; lowercased, deduped
     raw = " ".join(tag_list)
-    parts = []
+    parts: List[str] = []
     for piece in raw.replace(",", " ").split():
         p = piece.strip().lower()
         if p:
             parts.append(p)
-    return sorted(list(dict.fromkeys(parts)))  # dedupe while preserving order-ish
+    # dedupe while preserving order
+    seen = {}
+    for p in parts:
+        if p not in seen:
+            seen[p] = True
+    return list(seen.keys())
+
+# ---------------- Commands ----------------
 
 def cmd_add(args) -> int:
     db = load_db()
-   tags = normalize_tags([args.tags]) if isinstance(args.tags, str) else normalize_tags(args.tags)
     text = " ".join(args.text).strip()
     if not text:
         print('Nothing to add. Usage: add "your idea" --tags ai,tools')
         return 1
+    # args.tags is a string (possibly empty)
+    tags = normalize_tags([args.tags]) if isinstance(args.tags, str) else normalize_tags(args.tags)
     idea_id = db["last_id"] + 1
     db["last_id"] = idea_id
     idea = Idea(id=idea_id, text=text, tags=tags, created_at=now_iso())
     db["items"].append(asdict(idea))
     save_db(db)
-    print(f"✅ Saved idea #{idea_id} with tags: {', '.join(tags) if tags else '(none)'}")
+    label = ", ".join(tags) if tags else "(none)"
+    print(f"✅ Saved idea #{idea_id} with tags: {label}")
     return 0
 
 def cmd_list(_args) -> int:
     db = load_db()
     items = db["items"]
     if not items:
-        print("No ideas yet. Add one with: add \"idea\" --tags tag1,tag2")
+        print('No ideas yet. Add one with: add "idea" --tags tag1,tag2')
         return 0
     for it in items:
         tags = ", ".join(it.get("tags", [])) or "(none)"
@@ -108,8 +117,8 @@ def cmd_addtag(args) -> int:
     except Exception:
         print("Provide a valid numeric id. Example: addtag 3 --tags marketing,landing")
         return 1
+    # args.tags is list from REMAINDER; join to allow commas
     extra = normalize_tags([",".join(args.tags)]) if isinstance(args.tags, list) else normalize_tags([args.tags])
-
     modified = False
     for it in db["items"]:
         if it["id"] == idea_id:
@@ -165,6 +174,8 @@ def cmd_stats(_args) -> int:
         for t in sorted(by_tag.keys()):
             print(f"  {t}: {by_tag[t]}")
     return 0
+
+# ---------------- Parser ----------------
 
 def build_parser():
     p = argparse.ArgumentParser(

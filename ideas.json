@@ -1,5 +1,5 @@
 {
-  "last_id": 2,
+  "last_id": 3,
   "items": [
     {
       "id": 1,
@@ -9,6 +9,12 @@
         "pricing"
       ],
       "created_at": "2025-09-10 10:01:47"
+    },
+    {
+      "id": 3,
+      "text": "SaaS research --tags ai,saas",
+      "tags": [],
+      "created_at": "2025-09-10 10:54:18"
     }
   ]
 }
