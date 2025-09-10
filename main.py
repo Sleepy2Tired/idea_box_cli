@@ -43,7 +43,7 @@ def normalize_tags(tag_list: List[str]) -> List[str]:
 
 def cmd_add(args) -> int:
     db = load_db()
-    tags = normalize_tags([args.tags]) if isinstance(args.tags, str) else normalize_tags(args.tags)
+   tags = normalize_tags([args.tags]) if isinstance(args.tags, str) else normalize_tags(args.tags)
     text = " ".join(args.text).strip()
     if not text:
         print('Nothing to add. Usage: add "your idea" --tags ai,tools')
@@ -173,11 +173,10 @@ def build_parser():
     )
     sub = p.add_subparsers(dest="cmd", required=True)
 
-   add = sub.add_parser("add", help='Add an idea. Example: add "Ship MVP" --tags ai,tools')
-add.add_argument("text", nargs=argparse.REMAINDER)
-add.add_argument("--tags", "-t", type=str, default="")
-add.set_defaults(func=cmd_add)
-
+    add = sub.add_parser("add", help='Add an idea. Example: add "Ship MVP" --tags ai,tools')
+    add.add_argument("text", nargs=argparse.REMAINDER)
+    add.add_argument("--tags", "-t", type=str, default="")
+    add.set_defaults(func=cmd_add)
 
     ls = sub.add_parser("list", help="List all ideas")
     ls.set_defaults(func=cmd_list)
